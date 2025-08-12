@@ -49,6 +49,7 @@ const InstagramIcon = () => (<svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0
 const LinkedInIcon = () => (<svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>);
 const SunIcon = () => (<svg viewBox="0 0 24 24"><path d="M12 9c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 1c1.105 0 2 .895 2 2s-.895 2-2 2-2-.895-2-2 .895-2 2-2zm0-7c.552 0 1 .448 1 1v2c0 .552-.448 1-1 1s-1-.448-1-1v-2c0-.552.448-1 1-1zm0 14c.552 0 1 .448 1 1v2c0 .552-.448 1-1 1s-1-.448-1-1v-2c0-.552.448-1 1-1zm-7-6c.552 0 1 .448 1 1h2c0 .552-.448 1-1 1s-1-.448-1-1h-2c0-.552.448-1 1-1zm14 0c.552 0 1 .448 1 1h2c0 .552-.448 1-1 1s-1-.448-1-1h-2c0-.552.448-1 1-1zm-9.778-5.778c.391-.391 1.023-.391 1.414 0l1.414 1.414c.391.391.391 1.023 0 1.414-.391.391-1.023.391-1.414 0l-1.414-1.414c-.391-.391-.391-1.023 0-1.414zm11.164 11.164c.391-.391 1.023-.391 1.414 0l1.414 1.414c.391.391.391 1.023 0 1.414-.391.391-1.023.391-1.414 0l-1.414-1.414c-.391-.391-.391-1.023 0-1.414zm-1.414-9.75c.391.391.391 1.023 0 1.414l-1.414 1.414c-.391.391-1.023.391-1.414 0-.391-.391-.391-1.023 0-1.414l1.414-1.414c.391-.391 1.023-.391 1.414 0zm-11.164 11.164c.391-.391 1.023-.391 1.414 0l1.414 1.414c.391.391.391 1.023 0 1.414s-1.023.391-1.414 0l-1.414-1.414c-.39-.391-.39-1.023 0-1.414z"/></svg>);
 const MoonIcon = () => (<svg viewBox="0 0 24 24"><path d="M12 11.25c1.928 0 3.614 1.04 4.5 2.639-2.294.527-4 2.555-4 4.861 0 .504.084.99.233 1.451-2.399-.493-4.233-2.521-4.233-4.851 0-2.761 2.239-5 5-5zm-4.009 2.191c-2.859.459-5.012 2.87-5.012 5.809 0 3.195 2.582 5.75 5.76 5.75 3.039 0 5.539-2.321 5.75-5.305-1.921 1.517-4.322 2.305-6.741 2.305-2.859 0-5.467-1.126-7.382-3.042.434-3.528 3.393-6.267 6.951-6.267.383 0 .762.035 1.134.101-1.412.863-2.328 2.365-2.5 4.099z"/></svg>);
+const SystemIcon = () => (<svg viewBox="0 0 24 24"><path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/></svg>);
 
 // --------- NAVBAR COMPONENT ---------
 const Navbar = ({ activeSection, sections, onNavClick, cycleTheme, theme }) => {
@@ -92,8 +93,10 @@ const Navbar = ({ activeSection, sections, onNavClick, cycleTheme, theme }) => {
             ))}
           </div>
           <div className="nav-actions">
-            <button className="theme-toggle" onClick={cycleTheme}>
-              {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            <button className="theme-toggle" onClick={cycleTheme} title={`Current: ${theme}. Switch to next.`}>
+              {theme === 'light' && <SunIcon />}
+              {theme === 'dark' && <MoonIcon />}
+              {theme === 'system' && <SystemIcon />}
             </button>
             <button className="menu-toggle-mobile" onClick={() => setIsMenuOpen(true)}>Menu</button>
           </div>
@@ -186,7 +189,7 @@ const About = ({ innerRef }) => {
         </div>
         <div className="about-text">
           <h2 className="about-title">Vysakh R</h2>
-          <p className="about-philosophy">My lens is a bridge between the timeless traditions of Kerala and the pulse of modern life. I seek the stories whispered by the monsoon rains and painted in the vibrant hues of our festivals.</p>
+          <p className="about-philosophy">My lens is a bridge between the timeless traditions of Kerala and the pulse of modern life. I seek the stories whispered by the monsoon rains and painted in the vibrant hues of our festivals and traditions.</p>
           <p>This is more than a profession; it's my language. Let's collaborate and translate your story into something unforgettable.</p>
           <a href="mailto:rvysakh96@gmail.com" className="contact-link-button">Start a Conversation</a>
         </div>
@@ -261,26 +264,44 @@ const Footer = ({ showBackToTop }) => {
 // --------- MAIN APP COMPONENT ---------
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'system');
   const [activeSection, setActiveSection] = useState('home');
   const [showBackToTop, setShowBackToTop] = useState(false);
 
-  // Manage Theme
+  // --- UPDATED THEME LOGIC ---
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    const root = document.documentElement;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleSystemThemeChange = (e) => {
+      if (theme === 'system') {
+        root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    };
+
+    if (theme === 'system') {
+      localStorage.removeItem('theme');
+      root.setAttribute('data-theme', mediaQuery.matches ? 'dark' : 'light');
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
+    } else {
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    }
+
     setTimeout(() => setIsLoaded(true), 100);
-  }, []);
+
+    return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+  }, [theme]);
   
   const cycleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    const themes = ['dark', 'light', 'system']; // New flow: dark -> light -> system
+    const currentIndex = themes.indexOf(theme);
+    const nextTheme = themes[(currentIndex + 1) % themes.length];
+    setTheme(nextTheme);
   };
+  // --- END OF THEME LOGIC ---
 
-  // Manage Active Section and Back to Top Button
   const sectionRefs = {
     home: useRef(null),
     portfolio: useRef(null),

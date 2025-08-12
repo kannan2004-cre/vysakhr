@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+Vysakh R - A Visionary Photography Portfolio
+(Note: You should replace the link above with a real screenshot of your finished website.)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the official repository for the professional portfolio of Vysakh R, a talented photographer from Kerala, India. This project is a testament to what's possible when modern web technology meets artistic vision. It was designed from the ground up to be a completely bespoke, futuristic, and memorable digital experience, moving beyond generic templates to create something truly unique.
 
-## Available Scripts
+[Live Demo Link Here] (Replace this with your deployed website URL)
 
-In the project directory, you can run:
+✨ Core Features & Uniqueness
+This is not just another portfolio website. Every element has been crafted to be simple, interactive, and futuristic.
 
-### `npm start`
+1. Bespoke Design Philosophy
+The entire website is built from scratch using React and pure CSS. No UI frameworks like Bootstrap or Tailwind were used. This ensures a lightning-fast, lightweight, and completely original design that is not bound by the constraints of a pre-built system.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. The "Weaver's Shuttle" Navigation
+The navbar is one of the site's signature features.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Desktop: An elegant, pill-shaped "shuttle" smoothly glides between links as you scroll or click, inspired by the shuttle on a traditional Kerala handloom. This provides a fluid and tactile feedback loop.
 
-### `npm test`
+Mobile: To avoid a standard hamburger menu, a "Menu" button reveals an immersive, full-screen overlay with large, easily tappable links that animate into view.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. The "Grid Reveal" Portfolio
+The portfolio rejects the standard grid in favor of a more engaging experience.
 
-### `npm run build`
+It initially presents a clean grid of minimalist placeholders, each bearing a project title.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+On hover, the placeholder animates open with a sharp split-reveal effect, unveiling the photograph beneath like curtains drawing apart. This turns Browse into a satisfying, interactive discovery process.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Immersive Details
+Custom Cursor: A subtle, accent-colored cursor follows the user, transforming on hover over interactive elements. This small detail makes the entire site feel more responsive and premium.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Dynamic Theming: A clean toggle allows users to switch between a festive Light Mode ("Onam Sadya") and a dramatic Dark Mode ("Pooram Night"), with colors inspired by the vibrant festivals of Kerala.
 
-### `npm run eject`
+Pure CSS Animations: All animations, from the "Weaver's Shuttle" to the "Grid Reveal" and scroll-based fade-ins, are created with pure CSS transitions and keyframes, ensuring smooth performance without relying on external libraries.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+🚀 Tech Stack
+Framework: React (Functional Components & Hooks)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Styling: Pure CSS3 with CSS Variables (Custom Properties)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Build Tool: Create React App
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Dependencies: No external UI, animation, or CSS libraries.

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import image from './assets/vysakh.png';
+import emailjs from '@emailjs/browser';
 
 // --- IMPORT YOUR LOCAL IMAGES ---
 import ulsavamImage from './assets/ulsavam.jpeg';
@@ -22,6 +23,8 @@ import portrait13Image from './assets/portrait13.jpeg'; */
 import streetImage from './assets/street.jpeg';
 import theyyamImage from './assets/theyyam.jpeg';
 
+// Initialize EmailJS with environment variable
+emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
 
 // --------- HELPER HOOK for Scroll Animations ---------
 const useIntersectionObserver = (options) => {
@@ -132,45 +135,74 @@ const Cursor = () => {
 // --------- HERO SECTION COMPONENT ---------
 const Hero = ({ innerRef }) => (
   <section ref={innerRef} id="home" className="hero-section">
+    <div className="hero-background">
+      <img src={lakeImage} alt="Serene Kerala backwaters" />
+    </div>
+    <div className="hero-overlay"></div>
     <div className="hero-content">
       <h1 className="hero-name">
         {'Vysakh R'.split('').map((char, i) => <span key={i} style={{ animationDelay: `${0.1 + i * 0.05}s` }}>{char === ' ' ? '\u00A0' : char}</span>)}
       </h1>
       <p className="hero-tagline">Visual Storyteller from God's Own Country</p>
-      <p className="hero-tagline">Tap on each to see my works!</p>
     </div>
     <div className="scroll-indicator"><div className="scroll-line"></div></div>
   </section>
 );
 
-// --------- GRID REVEAL PORTFOLIO SECTION ---------
+// --------- STAGGERED PARALLAX PORTFOLIO ---------
 const Portfolio = ({ innerRef }) => {
   const [setNode, isVisible] = useIntersectionObserver({ threshold: 0.1 });
+  const gridRef = useRef(null);
 
-  const portfolioImages = [
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth <= 768) return; // Disable on mobile
+      const columns = gridRef.current.children;
+      const scrollY = window.scrollY;
+      // Apply different speeds to different columns
+      columns[0].style.transform = `translateY(${scrollY * 0.05}px)`;
+      columns[1].style.transform = `translateY(${scrollY * 0.12}px)`;
+      columns[2].style.transform = `translateY(${scrollY * 0.03}px)`;
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const allImages = [
     { id: 1, src: theyyamImage, title: 'Theyyam Ritual' },
-    { id: 2, src: ulsavamImage, title: 'Temple Festival' },
+    { id: 6, src: portrait1Image, title: 'The Gaze' },
     { id: 3, src: mudiyettImage, title: 'Mudiyettu Performer' },
     { id: 4, src: lakeImage, title: 'Serene Backwaters' },
-    { id: 5, src: streetImage, title: 'Street Moments' },
-    { id: 6, src: portrait1Image, title: 'The Gaze' },
     { id: 7, src: portrait2Image, title: 'Contemplation' },
+    { id: 2, src: ulsavamImage, title: 'Temple Festival' },
     { id: 8, src: portrait3Image, title: 'Elder Wisdom' },
+    { id: 5, src: streetImage, title: 'Street Moments' },
     { id: 9, src: portrait4Image, title: 'Quiet Strength' },
   ];
+
+  // Distribute images into three columns
+  const columns = [[], [], []];
+  allImages.forEach((image, index) => {
+    columns[index % 3].push(image);
+  });
 
   return (
     <section ref={innerRef} id="portfolio">
       <div ref={setNode} className={`section-header ${isVisible ? 'visible' : ''}`}>
         <h2>Portfolio</h2>
       </div>
-      <div className="portfolio-grid">
-        {portfolioImages.map((img, index) => (
-          <div key={img.id} className={`portfolio-item ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + index * 0.1}s` }}>
-            <img src={img.src} alt={img.title} className="portfolio-image" loading="lazy" />
-            <div className="portfolio-placeholder">
-              <h3>{img.title}</h3>
-            </div>
+      <div className="portfolio-grid" ref={gridRef}>
+        {columns.map((column, colIndex) => (
+          <div key={colIndex} className="portfolio-column">
+            {column.map((img, imgIndex) => (
+              <div key={img.id} className={`portfolio-item ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + (colIndex * 0.05 + imgIndex * 0.1)}s` }}>
+                <img src={img.src} alt={img.title} className="portfolio-image" loading="lazy" />
+                <div className="portfolio-overlay">
+                  <h3>{img.title}</h3>
+                </div>
+              </div>
+            ))}
           </div>
         ))}
       </div>
@@ -202,25 +234,122 @@ const About = ({ innerRef }) => {
 const Contact = ({ innerRef }) => {
   const [setNode, isVisible] = useIntersectionObserver({ threshold: 0.2 });
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [messageState, setMessageState] = useState({ type: '', text: '', visible: false });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef();
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleSubmit = (e) => {
+  
+  const showMessage = (type, text) => {
+    setMessageState({ type, text, visible: true });
+    setTimeout(() => {
+      setMessageState(prev => ({ ...prev, visible: false }));
+    }, 5000);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Thank you, ${formData.name}! Your message has been sent.`);
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+
+    // Check if environment variables are available
+    if (!process.env.REACT_APP_EMAILJS_SERVICE_ID || 
+        !process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 
+        !process.env.REACT_APP_EMAILJS_PUBLIC_KEY) {
+      console.error('EmailJS environment variables are not configured properly');
+      showMessage('error', 'Email service is not configured. Please contact me directly at rvysakh96@gmail.com');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Create template parameters object
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_name: 'Vysakh R', // Your name
+      };
+
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+      
+      showMessage('success', `Thank you, ${formData.name}! Your message has been sent successfully.`);
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      showMessage('error', 'Sorry, there was an error sending your message. Please try again or contact me directly at rvysakh96@gmail.com');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section ref={innerRef} id="contact">
       <div ref={setNode} className={`section-header ${isVisible ? 'visible' : ''}`}><h2>Get In Touch</h2></div>
       <div className={`contact-container ${isVisible ? 'visible' : ''}`}>
-        <form onSubmit={handleSubmit} className="contact-form">
-          <div className="form-group"><input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder=" " /><label htmlFor="name">Your Name</label></div>
-          <div className="form-group"><input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder=" " /><label htmlFor="email">Your Email</label></div>
-          <div className="form-group"><textarea id="message" name="message" rows="5" value={formData.message} onChange={handleChange} required placeholder=" "></textarea><label htmlFor="message">Your Message</label></div>
-          <button type="submit" className="submit-btn">Send Message</button>
+        <form ref={formRef} onSubmit={handleSubmit} className="contact-form">
+          <div className="form-group">
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              value={formData.name} 
+              onChange={handleChange} 
+              required 
+              placeholder=" " 
+              disabled={isSubmitting}
+            />
+            <label htmlFor="name">Your Name</label>
+          </div>
+          <div className="form-group">
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              required 
+              placeholder=" " 
+              disabled={isSubmitting}
+            />
+            <label htmlFor="email">Your Email</label>
+          </div>
+          <div className="form-group">
+            <textarea 
+              id="message" 
+              name="message" 
+              rows="5" 
+              value={formData.message} 
+              onChange={handleChange} 
+              required 
+              placeholder=" "
+              disabled={isSubmitting}
+            ></textarea>
+            <label htmlFor="message">Your Message</label>
+          </div>
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+          </button>
+          
+          {/* Message Display */}
+          <div className={`form-message ${messageState.type} ${messageState.visible ? 'visible' : ''}`}>
+            {messageState.text}
+          </div>
         </form>
-        <div className="contact-info"><div className="social-links"><a href="https://www.instagram.com/wanderlust_lens_stories/" target="_blank" rel="noopener noreferrer"><InstagramIcon /> Instagram</a><a href="https://www.linkedin.com/in/vysakh-r/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /> LinkedIn</a></div></div>
+        <div className="contact-info">
+          <div className="social-links">
+            <a href="https://www.instagram.com/wanderlust_lens_stories/" target="_blank" rel="noopener noreferrer">
+              <InstagramIcon /> Instagram
+            </a>
+            <a href="https://www.linkedin.com/in/vysakh-r/" target="_blank" rel="noopener noreferrer">
+              <LinkedInIcon /> LinkedIn
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -260,7 +389,6 @@ const Footer = ({ showBackToTop }) => {
   );
 };
 
-
 // --------- MAIN APP COMPONENT ---------
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -268,7 +396,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [showBackToTop, setShowBackToTop] = useState(false);
 
-  // --- UPDATED THEME LOGIC ---
+  // Manage Theme with System Preference
   useEffect(() => {
     const root = document.documentElement;
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -295,13 +423,13 @@ export default function App() {
   }, [theme]);
   
   const cycleTheme = () => {
-    const themes = ['dark', 'light', 'system']; // New flow: dark -> light -> system
+    const themes = ['dark', 'light', 'system'];
     const currentIndex = themes.indexOf(theme);
     const nextTheme = themes[(currentIndex + 1) % themes.length];
     setTheme(nextTheme);
   };
-  // --- END OF THEME LOGIC ---
 
+  // Manage Active Section and Back to Top Button
   const sectionRefs = {
     home: useRef(null),
     portfolio: useRef(null),

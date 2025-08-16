@@ -6,6 +6,8 @@
   --secondary-accent: #2E8B57; /* Banana Leaf Green */
   --nav-bg: rgba(252, 251, 244, 0.7);
   --card-bg: rgba(46, 139, 87, 0.05);
+  --success-color: #10B981;
+  --error-color: #EF4444;
 }
 
 [data-theme='dark'] {
@@ -15,6 +17,8 @@
   --secondary-accent: #D4AF37; /* Elephant Gold */
   --nav-bg: rgba(26, 26, 26, 0.8);
   --card-bg: rgba(212, 175, 55, 0.07);
+  --success-color: #10B981;
+  --error-color: #F87171;
 }
 
 /* 2. GLOBAL STYLES & RESETS */
@@ -79,29 +83,83 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
 .section-header.visible { opacity: 1; transform: translateY(0); }
 .section-header h2 { font-family: 'Lora', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; position: relative; display: inline-block; padding-bottom: 0.5rem; }
 .section-header h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--secondary-accent); border-radius: 2px; }
-.hero-section { justify-content: center; text-align: center; }
+
+/* 6. IMMERSIVE HERO SECTION */
+.hero-section { justify-content: center; text-align: center; overflow: hidden; }
+.hero-background { position: absolute; inset: 0; z-index: 1; transform: scale(1.1); }
+.hero-background img { width: 100%; height: 100%; object-fit: cover; filter: blur(5px) brightness(0.7); animation: kenBurnsHero 25s ease-in-out infinite; }
+@keyframes kenBurnsHero { 0% { transform: scale(1.1) translate(0, 0); } 50% { transform: scale(1.2) translate(-2%, 2%); } 100% { transform: scale(1.1) translate(0, 0); } }
+.hero-overlay { position: absolute; inset: 0; z-index: 2; background: radial-gradient(circle, transparent, var(--bg-color) 75%); }
+.hero-content { position: relative; z-index: 3; }
 .hero-name { font-family: 'Lora', serif; font-size: clamp(3rem, 10vw, 7rem); font-weight: bold; }
 .hero-tagline { font-size: clamp(1rem, 3vw, 1.5rem); font-weight: 300; margin-top: 1rem; color: var(--secondary-accent); }
-.scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: var(--text-color); opacity: 0.5; }
+.scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: var(--text-color); opacity: 0.5; z-index: 3; }
 .scroll-line { width: 100%; height: 100%; background: var(--bg-color); transform-origin: top; animation: scrollAnim 2s ease-in-out infinite; }
 @keyframes scrollAnim { 0%, 100% { transform: scaleY(0); } 50% { transform: scaleY(1); } }
 
-/* 6. GRID REVEAL PORTFOLIO STYLES */
-.portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-.portfolio-item { aspect-ratio: 4/5; position: relative; border-radius: 12px; overflow: hidden; opacity: 0; transform: translateY(50px); transition: opacity 0.6s, transform 0.6s; }
-.portfolio-item.visible { opacity: 1; transform: translateY(0); }
-.portfolio-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-.portfolio-item:hover .portfolio-image { transform: scale(1.1); }
-.portfolio-placeholder { position: absolute; inset: 0; z-index: 2; display: flex; justify-content: center; align-items: center; text-align: center; padding: 1rem; }
-.portfolio-placeholder h3 { color: var(--text-color); font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 400; opacity: 1; transition: opacity 0.2s ease; z-index: 4; }
-.portfolio-placeholder::before, .portfolio-placeholder::after { content: ''; position: absolute; top: 0; width: 51%; height: 100%; background-color: var(--bg-color); border: 1px solid var(--card-bg); z-index: 3; transition: transform 0.6s cubic-bezier(0.87, 0, 0.13, 1); }
-.portfolio-placeholder::before { left: 0; }
-.portfolio-placeholder::after { right: 0; }
-.portfolio-item:hover .portfolio-placeholder::before { transform: translateX(-100%); }
-.portfolio-item:hover .portfolio-placeholder::after { transform: translateX(100%); }
-.portfolio-item:hover .portfolio-placeholder h3 { opacity: 0; }
+/* 7. STAGGERED PARALLAX PORTFOLIO */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  /* Apply perspective to the parent grid for the parallax effect */
+  perspective: 1000px; 
+}
+.portfolio-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  /* This will-change hints the browser to optimize for transform changes */
+  will-change: transform;
+}
+/* Stagger the columns vertically for a masonry look */
+.portfolio-column:nth-child(2) {
+  margin-top: 5rem;
+}
+.portfolio-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.portfolio-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.portfolio-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block; /* Removes bottom space from img tag */
+  transition: transform 0.4s ease-out;
+}
+.portfolio-item:hover .portfolio-image {
+  transform: scale(1.05);
+}
+.portfolio-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  color: #fff;
+  transform: translateY(100%);
+  transition: transform 0.4s ease-out;
+}
+.portfolio-item:hover .portfolio-overlay {
+  transform: translateY(0);
+}
+.portfolio-overlay h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
 
-/* 7. OTHER SECTIONS */
+/* 8. OTHER SECTIONS */
 .about-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: center; opacity: 0; transition: opacity 1s ease; }
 .about-container.visible { opacity: 1; }
 .about-photo { border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -110,22 +168,114 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
 .about-philosophy { font-family: 'Lora', serif; font-style: italic; font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--secondary-accent); }
 .contact-link-button { display: inline-block; margin-top: 1.5rem; padding: 0.8rem 2rem; background-color: var(--primary-accent); color: #1a1a1a; text-decoration: none; border-radius: 5px; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s; }
 .contact-link-button:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+/* 9. CONTACT FORM & MESSAGES */
 .contact-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: flex-start; opacity: 0; transition: opacity 1s ease; }
 .contact-container.visible { opacity: 1; }
 .form-group { position: relative; margin-bottom: 2.5rem; }
-.form-group input, .form-group textarea { width: 100%; background: transparent; border: none; border-bottom: 2px solid var(--text-color); padding: 0.5rem 0; font-size: 1rem; color: var(--text-color); outline: none; transition: border-color 0.3s; }
-.form-group label { position: absolute; top: 0.5rem; left: 0; pointer-events: none; transition: all 0.3s ease; color: var(--text-secondary); }
-.form-group input:focus + label, .form-group input:not(:placeholder-shown) + label, .form-group textarea:focus + label, .form-group textarea:not(:placeholder-shown) + label { top: -1.2rem; font-size: 0.8rem; color: var(--primary-accent); }
-.submit-btn { padding: 0.8rem 2rem; background-color: var(--primary-accent); color: #1a1a1a; border: none; border-radius: 5px; font-weight: 600; transition: opacity 0.3s; }
-.submit-btn:hover { opacity: 0.8; }
+.form-group input, .form-group textarea { 
+  width: 100%; 
+  background: transparent; 
+  border: none; 
+  border-bottom: 2px solid var(--text-color); 
+  padding: 0.5rem 0; 
+  font-size: 1rem; 
+  color: var(--text-color); 
+  outline: none; 
+  transition: border-color 0.3s, opacity 0.3s; 
+}
+.form-group input:disabled, .form-group textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--primary-accent);
+}
+.form-group label { 
+  position: absolute; 
+  top: 0.5rem; 
+  left: 0; 
+  pointer-events: none; 
+  transition: all 0.3s ease; 
+  color: var(--text-secondary); 
+}
+.form-group input:focus + label, 
+.form-group input:not(:placeholder-shown) + label, 
+.form-group textarea:focus + label, 
+.form-group textarea:not(:placeholder-shown) + label { 
+  top: -1.2rem; 
+  font-size: 0.8rem; 
+  color: var(--primary-accent); 
+}
+.submit-btn { 
+  padding: 0.8rem 2rem; 
+  background-color: var(--primary-accent); 
+  color: #1a1a1a; 
+  border: none; 
+  border-radius: 5px; 
+  font-weight: 600; 
+  font-size: 1rem;
+  transition: opacity 0.3s, transform 0.2s; 
+  cursor: pointer;
+}
+.submit-btn:hover:not(:disabled) { 
+  opacity: 0.8; 
+  transform: translateY(-2px);
+}
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Form Message Styling */
+.form-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s ease;
+  border-left: 4px solid;
+}
+
+.form-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-message.success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+  border-left-color: var(--success-color);
+}
+
+.form-message.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
+  border-left-color: var(--error-color);
+}
+
+[data-theme='dark'] .form-message.success {
+  background-color: rgba(16, 185, 129, 0.15);
+}
+
+[data-theme='dark'] .form-message.error {
+  background-color: rgba(248, 113, 113, 0.15);
+}
+
 .contact-info .social-links { display: flex; flex-direction: column; gap: 1rem; }
 .social-links a { color: var(--text-color); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
 .social-links a:hover { color: var(--primary-accent); }
 .social-links svg { width: 24px; height: 24px; fill: currentColor; }
 
-/* 8. RESPONSIVE DESIGN */
+/* 10. RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .portfolio-column:nth-child(2) { margin-top: 0; } /* Reset stagger for 2 columns */
+  .portfolio-column:nth-child(3) { display: none; } /* Hide 3rd column if needed or re-distribute images in JS */
 }
 
 @media (max-width: 768px) {
@@ -145,12 +295,23 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
     color: var(--text-color);
   }
   
-  .portfolio-grid,
-  .about-container,
-  .contact-container { grid-template-columns: 1fr; }
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 0; /* No gap needed for single column */
+  }
+  .portfolio-column {
+    margin-top: 0 !important; /* Reset all margins */
+  }
+
+  .about-container, .contact-container { grid-template-columns: 1fr; }
+  
+  .form-message {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
 }
 
-/* 9. FOOTER STYLES */
+/* 11. FOOTER STYLES */
 .footer-section { padding: 4rem 5%; background-color: var(--card-bg); text-align: center; position: relative; z-index: 2; }
 .footer-content { max-width: 1200px; margin: 0 auto; }
 .footer-socials { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }

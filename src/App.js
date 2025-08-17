@@ -420,7 +420,7 @@ const Contact = ({ innerRef }) => {
             <a href="https://www.instagram.com/wanderlust_lens_stories/" target="_blank" rel="noopener noreferrer">
               <InstagramIcon /> Instagram
             </a>
-            <a href="https://www.linkedin.com/in/vysakh-r/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/vysakh-r-b47721352?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer">
               <LinkedInIcon /> LinkedIn
             </a>
           </div>

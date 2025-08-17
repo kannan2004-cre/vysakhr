@@ -97,22 +97,19 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
 .scroll-line { width: 100%; height: 100%; background: var(--bg-color); transform-origin: top; animation: scrollAnim 2s ease-in-out infinite; }
 @keyframes scrollAnim { 0%, 100% { transform: scaleY(0); } 50% { transform: scaleY(1); } }
 
-/* 7. STAGGERED PARALLAX PORTFOLIO */
-.portfolio-grid {
+/* 7. DESKTOP PORTFOLIO - STAGGERED PARALLAX */
+.portfolio-grid.desktop-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  /* Apply perspective to the parent grid for the parallax effect */
   perspective: 1000px; 
 }
 .portfolio-column {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  /* This will-change hints the browser to optimize for transform changes */
   will-change: transform;
 }
-/* Stagger the columns vertically for a masonry look */
 .portfolio-column:nth-child(2) {
   margin-top: 5rem;
 }
@@ -133,7 +130,7 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block; /* Removes bottom space from img tag */
+  display: block;
   transition: transform 0.4s ease-out;
 }
 .portfolio-item:hover .portfolio-image {
@@ -159,17 +156,228 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
   font-weight: 500;
 }
 
-/* 8. OTHER SECTIONS */
-.about-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: center; opacity: 0; transition: opacity 1s ease; }
+/* 8. MOBILE PORTFOLIO - INNOVATIVE CAROUSEL */
+.portfolio-mobile {
+  width: 100%;
+  overflow-x: auto;
+  padding: 2rem 0;
+}
+
+.portfolio-carousel {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.portfolio-card-mobile {
+  flex: none;
+  width: 280px;
+  height: 400px;
+  perspective: 1000px;
+  scroll-snap-align: center;
+  opacity: 0;
+  transform: translateY(30px) rotateX(15deg);
+  animation: cardSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.portfolio-card-mobile.visible {
+  animation-play-state: running;
+}
+
+@keyframes cardSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(255,255,255,0.1);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: linear-gradient(145deg, var(--card-bg), transparent);
+}
+
+.card-inner:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 
+    0 30px 60px rgba(0,0,0,0.2),
+    0 0 0 1px rgba(255,255,255,0.2);
+}
+
+.card-front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.card-inner:hover .card-front img {
+  transform: scale(1.08);
+}
+
+.card-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0,0,0,0.3) 60%,
+    rgba(0,0,0,0.8) 100%
+  );
+  opacity: 0.9;
+}
+
+.card-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1.5rem 1.5rem;
+  color: white;
+  z-index: 2;
+}
+
+.card-title h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  transform: translateY(10px);
+  transition: transform 0.4s ease;
+}
+
+.card-inner:hover .card-title h3 {
+  transform: translateY(0);
+}
+
+/* 9. ENHANCED ABOUT SECTION WITH ABSTRACT BACKGROUND */
+.about-container { 
+  display: grid; 
+  grid-template-columns: 1fr 1.5fr; 
+  gap: 4rem; 
+  align-items: center; 
+  opacity: 0; 
+  transition: opacity 1s ease; 
+}
 .about-container.visible { opacity: 1; }
-.about-photo { border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+.about-photo-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.abstract-background {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.abstract-shape {
+  position: absolute;
+  border-radius: 50% 30% 70% 40%;
+  opacity: 0.6;
+  animation: float 6s ease-in-out infinite;
+  filter: blur(1px);
+}
+
+.shape-1 {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
+  top: -20%;
+  left: -20%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--secondary-accent), transparent);
+  top: 60%;
+  right: -15%;
+  animation-delay: 2s;
+}
+
+.shape-3 {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(225deg, var(--primary-accent), transparent);
+  top: -10%;
+  right: 30%;
+  animation-delay: 4s;
+}
+
+.shape-4 {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(315deg, var(--secondary-accent), var(--primary-accent));
+  bottom: -15%;
+  left: 20%;
+  animation-delay: 1s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    border-radius: 50% 30% 70% 40%;
+  }
+  33% {
+    transform: translateY(-15px) rotate(120deg);
+    border-radius: 30% 50% 40% 70%;
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+    border-radius: 70% 40% 50% 30%;
+  }
+}
+
+.about-photo { 
+  position: relative;
+  z-index: 2;
+  border-radius: 12px; 
+  overflow: hidden; 
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(255,255,255,0.1);
+  transition: transform 0.3s ease;
+}
+
+.about-photo:hover {
+  transform: translateY(-5px);
+}
+
 .about-photo img { width: 100%; display: block; }
+
 .about-title { font-family: 'Lora', serif; font-size: 2.5rem; margin-bottom: 1rem; }
 .about-philosophy { font-family: 'Lora', serif; font-style: italic; font-size: 1.2rem; margin-bottom: 1.5rem; color: var(--secondary-accent); }
 .contact-link-button { display: inline-block; margin-top: 1.5rem; padding: 0.8rem 2rem; background-color: var(--primary-accent); color: #1a1a1a; text-decoration: none; border-radius: 5px; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s; }
 .contact-link-button:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
-/* 9. CONTACT FORM & MESSAGES */
+/* 10. ENHANCED CONTACT FORM & INFO */
 .contact-container { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: flex-start; opacity: 0; transition: opacity 1s ease; }
 .contact-container.visible { opacity: 1; }
 .form-group { position: relative; margin-bottom: 2.5rem; }
@@ -266,16 +474,134 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
   background-color: rgba(248, 113, 113, 0.15);
 }
 
-.contact-info .social-links { display: flex; flex-direction: column; gap: 1rem; }
-.social-links a { color: var(--text-color); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
-.social-links a:hover { color: var(--primary-accent); }
+/* Contact Details Styling */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.phone-contact,
+.whatsapp-contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.phone-contact:hover,
+.whatsapp-contact:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.phone-contact svg,
+.whatsapp-contact svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--primary-accent);
+  flex-shrink: 0;
+}
+
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.contact-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.contact-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-value:hover {
+  color: var(--primary-accent);
+}
+
+.social-links { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1rem; 
+}
+.social-links a { 
+  color: var(--text-color); 
+  text-decoration: none; 
+  font-weight: 500; 
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+  transition: color 0.3s; 
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+.social-links a:hover { 
+  color: var(--primary-accent); 
+  background: var(--card-bg);
+}
 .social-links svg { width: 24px; height: 24px; fill: currentColor; }
 
-/* 10. RESPONSIVE DESIGN */
+/* 11. FOOTER STYLES */
+.footer-section { padding: 4rem 5%; background-color: var(--card-bg); text-align: center; position: relative; z-index: 2; }
+.footer-content { max-width: 1200px; margin: 0 auto; }
+.footer-socials { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+.footer-socials a { color: var(--text-color); transition: color 0.3s ease, transform 0.3s ease; }
+.footer-socials a:hover { color: var(--primary-accent); transform: translateY(-3px); }
+.footer-socials svg { width: 28px; height: 28px; fill: currentColor; }
+.footer-copyright { font-weight: 500; margin-bottom: 0.5rem; opacity: 0.8; }
+.footer-credit { font-size: 0.9rem; opacity: 0.6; }
+.footer-credit a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 4px; }
+.back-to-top-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: var(--primary-accent); color: #1a1a1a; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 999; opacity: 0; transform: translateY(20px); pointer-events: none; transition: opacity 0.4s ease, transform 0.4s ease; }
+.back-to-top-btn.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+.back-to-top-btn:hover { opacity: 0.8; }
+.back-to-top-btn svg { width: 24px; height: 24px; }
+
+/* 12. RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
-  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-  .portfolio-column:nth-child(2) { margin-top: 0; } /* Reset stagger for 2 columns */
-  .portfolio-column:nth-child(3) { display: none; } /* Hide 3rd column if needed or re-distribute images in JS */
+  .portfolio-grid.desktop-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+  }
+  .portfolio-column:nth-child(2) { 
+    margin-top: 0; 
+  }
+  
+  .about-photo-wrapper {
+    justify-content: flex-start;
+  }
+  
+  .abstract-background {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .abstract-shape {
+    opacity: 0.4;
+  }
+  
+  .shape-1 { width: 120px; height: 120px; }
+  .shape-2 { width: 80px; height: 80px; }
+  .shape-3 { width: 60px; height: 60px; }
+  .shape-4 { width: 100px; height: 100px; }
 }
 
 @media (max-width: 768px) {
@@ -295,33 +621,245 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
     color: var(--text-color);
   }
   
-  .portfolio-grid {
-    grid-template-columns: 1fr;
-    gap: 0; /* No gap needed for single column */
+  /* Hide desktop portfolio grid on mobile */
+  .portfolio-grid.desktop-grid {
+    display: none;
   }
-  .portfolio-column {
-    margin-top: 0 !important; /* Reset all margins */
+  
+  /* Show mobile portfolio */
+  .portfolio-mobile {
+    display: block;
+  }
+  
+  /* Mobile carousel adjustments */
+  .portfolio-carousel {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+  
+  .portfolio-card-mobile {
+    width: 250px;
+    height: 350px;
+  }
+  
+  .card-title h3 {
+    font-size: 1.2rem;
+  }
+  
+  .card-title {
+    padding: 1.5rem 1rem 1rem;
   }
 
-  .about-container, .contact-container { grid-template-columns: 1fr; }
+  .about-container, .contact-container { 
+    grid-template-columns: 1fr; 
+    gap: 2rem;
+  }
+  
+  .about-photo-wrapper {
+    order: 1;
+    margin-bottom: 2rem;
+  }
+  
+  .about-text {
+    order: 2;
+  }
+  
+  .abstract-background {
+    width: 90%;
+    height: 90%;
+  }
+  
+  .abstract-shape {
+    opacity: 0.3;
+  }
+  
+  .shape-1 { width: 80px; height: 80px; top: -10%; left: -10%; }
+  .shape-2 { width: 60px; height: 60px; top: 70%; right: -5%; }
+  .shape-3 { width: 40px; height: 40px; top: 5%; right: 20%; }
+  .shape-4 { width: 70px; height: 70px; bottom: -5%; left: 15%; }
+  
+  .contact-details {
+    gap: 1rem;
+  }
+  
+  .phone-contact,
+  .whatsapp-contact {
+    padding: 0.8rem;
+  }
+  
+  .contact-value {
+    font-size: 0.9rem;
+  }
   
   .form-message {
     font-size: 0.9rem;
     padding: 0.8rem;
   }
+  
+  .hero-name {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+  
+  .hero-tagline {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  }
+  
+  section {
+    padding: 6rem 5%;
+    min-height: auto;
+  }
 }
 
-/* 11. FOOTER STYLES */
-.footer-section { padding: 4rem 5%; background-color: var(--card-bg); text-align: center; position: relative; z-index: 2; }
-.footer-content { max-width: 1200px; margin: 0 auto; }
-.footer-socials { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
-.footer-socials a { color: var(--text-color); transition: color 0.3s ease, transform 0.3s ease; }
-.footer-socials a:hover { color: var(--primary-accent); transform: translateY(-3px); }
-.footer-socials svg { width: 28px; height: 28px; fill: currentColor; }
-.footer-copyright { font-weight: 500; margin-bottom: 0.5rem; opacity: 0.8; }
-.footer-credit { font-size: 0.9rem; opacity: 0.6; }
-.footer-credit a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 4px; }
-.back-to-top-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: var(--primary-accent); color: #1a1a1a; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 999; opacity: 0; transform: translateY(20px); pointer-events: none; transition: opacity 0.4s ease, transform 0.4s ease; }
-.back-to-top-btn.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
-.back-to-top-btn:hover { opacity: 0.8; }
-.back-to-top-btn svg { width: 24px; height: 24px; }
+@media (max-width: 480px) {
+  .portfolio-card-mobile {
+    width: 220px;
+    height: 320px;
+  }
+  
+  .card-title h3 {
+    font-size: 1.1rem;
+  }
+  
+  .nav-brand {
+    font-size: 1.5rem;
+  }
+  
+  .about-title {
+    font-size: 2rem;
+  }
+  
+  .about-philosophy {
+    font-size: 1.1rem;
+  }
+  
+  .contact-details {
+    margin-bottom: 1.5rem;
+  }
+  
+  .phone-contact,
+  .whatsapp-contact {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .contact-text {
+    align-items: center;
+  }
+}
+
+/* 13. DESKTOP ONLY STYLES */
+@media (min-width: 769px) {
+  /* Hide mobile portfolio on desktop */
+  .portfolio-mobile {
+    display: none;
+  }
+  
+  /* Show desktop portfolio */
+  .portfolio-grid.desktop-grid {
+    display: grid;
+  }
+}
+
+/* 14. HIGH RESOLUTION DISPLAYS */
+@media (min-width: 1400px) {
+  .nav-container,
+  section,
+  .footer-content {
+    max-width: 1400px;
+  }
+  
+  .portfolio-card-mobile {
+    width: 320px;
+    height: 450px;
+  }
+  
+  .card-title h3 {
+    font-size: 1.6rem;
+  }
+}
+
+/* 15. DARK MODE SPECIFIC ADJUSTMENTS */
+[data-theme='dark'] .about-photo {
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(255,255,255,0.1);
+}
+
+[data-theme='dark'] .card-inner {
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(255,255,255,0.05);
+}
+
+[data-theme='dark'] .card-inner:hover {
+  box-shadow: 
+    0 30px 60px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(255,255,255,0.1);
+}
+
+[data-theme='dark'] .phone-contact,
+[data-theme='dark'] .whatsapp-contact {
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(212, 175, 55, 0.05);
+}
+
+[data-theme='dark'] .phone-contact:hover,
+[data-theme='dark'] .whatsapp-contact:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* 16. ACCESSIBILITY & FOCUS STATES */
+.nav-links-desktop button:focus-visible,
+.theme-toggle:focus-visible,
+.menu-toggle-mobile:focus-visible,
+.contact-link-button:focus-visible,
+.submit-btn:focus-visible,
+.back-to-top-btn:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+.form-group input:focus-visible,
+.form-group textarea:focus-visible {
+  outline: none;
+  border-color: var(--primary-accent);
+  box-shadow: 0 2px 0 var(--primary-accent);
+}
+
+.contact-value:focus-visible,
+.social-links a:focus-visible,
+.footer-socials a:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 17. PRINT STYLES */
+@media print {
+  .weaver-nav,
+  .mobile-menu-overlay,
+  .custom-cursor,
+  .back-to-top-btn,
+  .scroll-indicator {
+    display: none;
+  }
+  
+  .hero-background {
+    display: none;
+  }
+  
+  section {
+    page-break-inside: avoid;
+    padding: 2rem 0;
+  }
+  
+  .portfolio-grid.desktop-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .portfolio-mobile {
+    display: none;
+  }
+}

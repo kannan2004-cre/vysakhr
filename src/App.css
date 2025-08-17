@@ -84,18 +84,99 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
 .section-header h2 { font-family: 'Lora', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; position: relative; display: inline-block; padding-bottom: 0.5rem; }
 .section-header h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--secondary-accent); border-radius: 2px; }
 
-/* 6. IMMERSIVE HERO SECTION */
-.hero-section { justify-content: center; text-align: center; overflow: hidden; }
-.hero-background { position: absolute; inset: 0; z-index: 1; transform: scale(1.1); }
-.hero-background img { width: 100%; height: 100%; object-fit: cover; filter: blur(5px) brightness(0.7); animation: kenBurnsHero 25s ease-in-out infinite; }
-@keyframes kenBurnsHero { 0% { transform: scale(1.1) translate(0, 0); } 50% { transform: scale(1.2) translate(-2%, 2%); } 100% { transform: scale(1.1) translate(0, 0); } }
-.hero-overlay { position: absolute; inset: 0; z-index: 2; background: radial-gradient(circle, transparent, var(--bg-color) 75%); }
-.hero-content { position: relative; z-index: 3; }
-.hero-name { font-family: 'Lora', serif; font-size: clamp(3rem, 10vw, 7rem); font-weight: bold; }
-.hero-tagline { font-size: clamp(1rem, 3vw, 1.5rem); font-weight: 300; margin-top: 1rem; color: var(--secondary-accent); }
-.scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); width: 2px; height: 50px; background: var(--text-color); opacity: 0.5; z-index: 3; }
-.scroll-line { width: 100%; height: 100%; background: var(--bg-color); transform-origin: top; animation: scrollAnim 2s ease-in-out infinite; }
-@keyframes scrollAnim { 0%, 100% { transform: scaleY(0); } 50% { transform: scaleY(1); } }
+/* 6. IMMERSIVE HERO SECTION - MOBILE FIXED */
+.hero-section { 
+  justify-content: center; 
+  text-align: center; 
+  overflow: hidden;
+  min-height: 100vh; 
+  min-height: 100svh; /* Safe area viewport height for mobile */
+  padding: 0 5%;
+  /* Ensure full screen on mobile */
+  height: 100vh;
+  height: 100svh;
+}
+
+.hero-background { 
+  position: absolute; 
+  inset: 0; 
+  z-index: 1; 
+  transform: scale(1.1); 
+}
+
+.hero-background img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  filter: blur(5px) brightness(0.7); 
+  animation: kenBurnsHero 25s ease-in-out infinite; 
+}
+
+@keyframes kenBurnsHero { 
+  0% { transform: scale(1.1) translate(0, 0); } 
+  50% { transform: scale(1.2) translate(-2%, 2%); } 
+  100% { transform: scale(1.1) translate(0, 0); } 
+}
+
+.hero-overlay { 
+  position: absolute; 
+  inset: 0; 
+  z-index: 2; 
+  background: radial-gradient(circle, transparent, var(--bg-color) 75%); 
+}
+
+.hero-content { 
+  position: relative; 
+  z-index: 3; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2rem 0;
+}
+
+.hero-name { 
+  font-family: 'Lora', serif; 
+  font-size: clamp(2.5rem, 8vw, 7rem); 
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.hero-tagline { 
+  font-size: clamp(1rem, 3vw, 1.5rem); 
+  font-weight: 300; 
+  color: var(--secondary-accent);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+.scroll-indicator { 
+  position: absolute; 
+  bottom: 2rem; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  width: 2px; 
+  height: 50px; 
+  background: var(--text-color); 
+  opacity: 0.5; 
+  z-index: 3; 
+}
+
+.scroll-line { 
+  width: 100%; 
+  height: 100%; 
+  background: var(--bg-color); 
+  transform-origin: top; 
+  animation: scrollAnim 2s ease-in-out infinite; 
+}
+
+@keyframes scrollAnim { 
+  0%, 100% { transform: scaleY(0); } 
+  50% { transform: scaleY(1); } 
+}
 
 /* 7. DESKTOP PORTFOLIO - STAGGERED PARALLAX */
 .portfolio-grid.desktop-grid {
@@ -621,6 +702,34 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
     color: var(--text-color);
   }
   
+  /* Mobile Hero Section Fixes */
+  .hero-section {
+    padding: 0 8%;
+    min-height: 100vh;
+    min-height: 100svh;
+    height: 100vh;
+    height: 100svh;
+  }
+  
+  .hero-content {
+    padding: 4rem 0 2rem;
+  }
+  
+  .hero-name {
+    font-size: clamp(2.2rem, 12vw, 5rem);
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-tagline {
+    font-size: clamp(0.9rem, 4vw, 1.3rem);
+    margin-top: 1rem;
+  }
+  
+  .scroll-indicator {
+    bottom: 3rem;
+    height: 40px;
+  }
+  
   /* Hide desktop portfolio grid on mobile */
   .portfolio-grid.desktop-grid {
     display: none;
@@ -696,21 +805,46 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
     padding: 0.8rem;
   }
   
-  .hero-name {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-  }
-  
-  .hero-tagline {
-    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-  }
-  
   section {
     padding: 6rem 5%;
     min-height: auto;
   }
+  
+  /* Override section padding for hero only */
+  .hero-section {
+    padding: 0 8% !important;
+  }
 }
 
 @media (max-width: 480px) {
+  /* Mobile Hero Section - Small Screens */
+  .hero-section {
+    padding: 0 6%;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  
+  .hero-content {
+    padding: 3rem 0 2rem;
+  }
+  
+  .hero-name {
+    font-size: clamp(2rem, 14vw, 4rem);
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+  
+  .hero-tagline {
+    font-size: clamp(0.85rem, 4.5vw, 1.2rem);
+    margin-top: 0.8rem;
+    line-height: 1.3;
+  }
+  
+  .scroll-indicator {
+    bottom: 2.5rem;
+    height: 35px;
+  }
+  
   .portfolio-card-mobile {
     width: 220px;
     height: 320px;
@@ -748,6 +882,53 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
   }
 }
 
+/* Mobile landscape orientation fix */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-section {
+    min-height: 100vh;
+    height: 100vh;
+    padding: 0 5%;
+  }
+  
+  .hero-content {
+    padding: 2rem 0 1rem;
+  }
+  
+  .hero-name {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero-tagline {
+    font-size: clamp(0.8rem, 3vw, 1.1rem);
+    margin-top: 0.5rem;
+  }
+  
+  .scroll-indicator {
+    bottom: 1.5rem;
+    height: 30px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .hero-section {
+    padding: 0 4%;
+  }
+  
+  .hero-name {
+    font-size: clamp(1.8rem, 16vw, 3.5rem);
+  }
+  
+  .hero-tagline {
+    font-size: clamp(0.8rem, 5vw, 1.1rem);
+  }
+  
+  .nav-brand {
+    font-size: 1.3rem;
+  }
+}
+
 /* 13. DESKTOP ONLY STYLES */
 @media (min-width: 769px) {
   /* Hide mobile portfolio on desktop */
@@ -758,6 +939,20 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
   /* Show desktop portfolio */
   .portfolio-grid.desktop-grid {
     display: grid;
+  }
+  
+  /* Desktop hero adjustments */
+  .hero-section {
+    min-height: 100vh;
+    height: 100vh;
+  }
+  
+  .hero-name {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+  }
+  
+  .hero-tagline {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   }
 }
 
@@ -776,6 +971,14 @@ section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; min-height: 100vh
   
   .card-title h3 {
     font-size: 1.6rem;
+  }
+  
+  .hero-name {
+    font-size: clamp(4rem, 6vw, 7rem);
+  }
+  
+  .hero-tagline {
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
   }
 }
 

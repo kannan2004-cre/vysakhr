@@ -406,7 +406,7 @@ const Contact = ({ innerRef }) => {
               <div className="contact-text">
                 <span className="contact-label">WhatsApp</span>
                 <a 
-                  href="https://wa.me/919567890123?text=Hi%20Vysakh,%20I'd%20like%20to%20discuss%20a%20photography%20project"
+                  href="https://wa.me/919249876203?text=Hi%20Vysakh,%20I'd%20like%20to%20discuss%20a%20photography%20project"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contact-value"

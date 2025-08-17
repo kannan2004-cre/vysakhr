@@ -3,7 +3,7 @@ Vysakh R - A Visionary Photography Portfolio
 
 Welcome to the official repository for the professional portfolio of Vysakh R, a talented photographer from Kerala, India. This project is a testament to what's possible when modern web technology meets artistic vision. It was designed from the ground up to be a completely bespoke, futuristic, and memorable digital experience, moving beyond generic templates to create something truly unique.
 
-[Live Demo Link Here] (Replace this with your deployed website URL)
+vysakhr.vercel.app
 
 ✨ Core Features & Uniqueness
 This is not just another portfolio website. Every element has been crafted to be simple, interactive, and futuristic.

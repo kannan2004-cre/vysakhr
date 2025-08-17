@@ -398,7 +398,7 @@ const Contact = ({ innerRef }) => {
               <PhoneIcon />
               <div className="contact-text">
                 <span className="contact-label">Phone</span>
-                <a href="tel:+919567890123" className="contact-value">+91 95678 90123</a>
+                <a href="tel:+919567890123" className="contact-value">+91 9249876203</a>
               </div>
             </div>
             <div className="whatsapp-contact">
